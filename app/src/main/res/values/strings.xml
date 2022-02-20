@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CoinMarket</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="market_fragment">Market</string>
+    <string name="home_fragment">Home</string>
+    <string name="bookMark_fragment">MarkedList</string>
 </resources>

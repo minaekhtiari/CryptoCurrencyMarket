@@ -34,6 +34,9 @@ public class AppViewModel extends AndroidViewModel {
     public Observable<AllMarketModel> MarketFutureCall(){
         return appRepository.marketListFutureCall();
     }
+    public void InsertAllMarketModell(AllMarketModel allMarketModel){
+        appRepository.InsertAllMarket(allMarketModel);
+    }
 
     MutableLiveData<ArrayList<Integer>> getPagerImgs() {
         ArrayList<Integer> imgs = new ArrayList();

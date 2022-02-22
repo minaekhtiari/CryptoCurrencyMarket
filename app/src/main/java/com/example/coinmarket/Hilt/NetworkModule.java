@@ -2,6 +2,7 @@ package com.example.coinmarket.Hilt;
 
 import com.example.coinmarket.Repository.AppRepository;
 import com.example.coinmarket.Retrofit.RequestApi;
+import com.example.coinmarket.RoomDataBase.DaoRoom;
 
 import java.io.IOException;
 
@@ -60,7 +61,7 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    AppRepository ProvideAppRepository(RequestApi requestApi){
-        return new AppRepository(requestApi);
+    AppRepository ProvideAppRepository(RequestApi requestApi, DaoRoom dao){
+        return new AppRepository(requestApi,dao);
     }
 }

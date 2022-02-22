@@ -136,7 +136,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onNext(@NonNull AllMarketModel allMarketModel) {
 
                         Log.e("TAG", "onNext: " + allMarketModel.getRootData().getCryptoCurrencyList().get(0).getName());
-                        Log.e("TAG", "onNext: " + allMarketModel.getRootData().getCryptoCurrencyList().get(1).getName());
+                        //Insert Data In Room
+                        appViewModel.InsertAllMarketModell(allMarketModel);
 
 
                     }

@@ -76,8 +76,8 @@ public class MainListFragment extends Fragment {
                         ArrayList<DataItem> dataItems = new ArrayList<>();
                         //if page was MainList
                         if (pos == 0) {
-                            for (int i = 0;i < data.size();i++){
-                                dataItems.add(data.get(data.size() - 1 - i));
+                            for (int i = 0;i < 50;i++){
+                                dataItems.add(data.get(i));
                             }
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                             fragmentMainListBinding.mainList.setLayoutManager(linearLayoutManager);

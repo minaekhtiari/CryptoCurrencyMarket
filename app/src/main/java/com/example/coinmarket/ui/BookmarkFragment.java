@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -20,12 +21,14 @@ import android.view.ViewGroup;
 
 import com.example.coinmarket.MainActivity;
 import com.example.coinmarket.R;
+import com.example.coinmarket.ViewModel.AppViewModel;
 import com.example.coinmarket.databinding.FragmentBookmarkBinding;
 
 public class BookmarkFragment extends Fragment {
 
    FragmentBookmarkBinding fragmentBookmarkBinding;
    MainActivity mainActivity;
+
 
     @Override
     public void onAttach(@NonNull Context context) {

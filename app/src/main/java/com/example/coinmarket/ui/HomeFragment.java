@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
 
                 if (position == 0){
-                    tab.setText("MainList");
+                    tab.setText("Top50List");
                 }else {
                     tab.setText("TestView");
                 }

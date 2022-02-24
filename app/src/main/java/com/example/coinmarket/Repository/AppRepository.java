@@ -12,6 +12,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -19,19 +20,19 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class AppRepository {
 
     RequestApi requestApi;
-    DaoRoom dao;
+    DaoRoom daoRoom;
 
 
-    public AppRepository(RequestApi requestApi, DaoRoom dao) {
+    public AppRepository(RequestApi requestApi, DaoRoom daoRoom) {
         this.requestApi = requestApi;
-        this.dao=dao;
+        this.daoRoom=daoRoom;
 
     }
     public Observable<AllMarketModel> marketListFutureCall(){
         return requestApi.makeMarketLatestListCall();
     }
     public void InsertAllMarket(AllMarketModel allMarketModel){
-        Completable.fromAction(()-> dao.insert(new MarketEntity(allMarketModel)))
+        Completable.fromAction(()-> daoRoom.insert(new MarketEntity(allMarketModel)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
@@ -51,5 +52,9 @@ public class AppRepository {
                     }
                 });
 
+    }
+
+    public Flowable<MarketEntity> getAllMarketData() {
+        return daoRoom.getAllMarketList();
     }
 }

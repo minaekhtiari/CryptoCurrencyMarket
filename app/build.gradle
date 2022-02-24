@@ -74,8 +74,6 @@ dependencies {
     testImplementation 'com.google.dagger:hilt-android-testing:2.41'
     testAnnotationProcessor 'com.google.dagger:hilt-compiler:2.41'
 
-//    ////rounded imageView
-//       implementation 'com.makeramen:roundedimageview:2.3.0'
 
 
     // Retrofit
@@ -89,7 +87,6 @@ dependencies {
 
     //Room
     def room_version = "2.4.1"
-
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // optional - RxJava2 support for Room

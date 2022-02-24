@@ -32,7 +32,8 @@ public class viewPagerAdapter extends RecyclerView.Adapter<viewPagerAdapter.Slid
         if (layoutInflater == null){
             layoutInflater = LayoutInflater.from(parent.getContext());
         }
-        ViewPagerBinding viewPagerBinding = DataBindingUtil.inflate(layoutInflater, R.layout.view_pager,parent,false);
+        ViewPagerBinding viewPagerBinding = DataBindingUtil.inflate(layoutInflater,
+                R.layout.view_pager,parent,false);
 
         return new SliderImageViewHolder(viewPagerBinding);
 

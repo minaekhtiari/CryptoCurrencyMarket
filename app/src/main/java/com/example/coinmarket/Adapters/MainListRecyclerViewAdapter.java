@@ -19,13 +19,29 @@ import com.example.coinmarket.databinding.MainListRecyclerItemBinding;
 
 import java.util.ArrayList;
 
-public class MainListRecyclerViewAdapter extends RecyclerView.Adapter<MainListRecyclerViewAdapter.MainListRecyclerViewHolder> {
+public class MainListRecyclerViewAdapter extends RecyclerView.Adapter<MainListRecyclerViewAdapter
+        .MainListRecyclerViewHolder> {
+//    public interface OnItemClickListener {
+//        void onItemClick(DataItem item, int position);
+//
+//
+//    }
+private onRecyclerViewItemClickListener mItemClickListener;
 
-    ArrayList<DataItem> dataItems;
+    public void setOnItemClickListener(onRecyclerViewItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
+    }
+
+    public interface onRecyclerViewItemClickListener {
+        void onItemClickListener(View view, int position);
+    }
+    private ArrayList<DataItem> dataItems;
     LayoutInflater layoutInflater;
+    //private final OnItemClickListener listener;
 
     public MainListRecyclerViewAdapter(ArrayList<DataItem> dataItems) {
         this.dataItems = dataItems;
+
     }
 
     @NonNull
@@ -44,8 +60,6 @@ public class MainListRecyclerViewAdapter extends RecyclerView.Adapter<MainListRe
         holder.bind(dataItems.get(position));
 
 
-
-
     }
 
     @Override
@@ -53,33 +67,37 @@ public class MainListRecyclerViewAdapter extends RecyclerView.Adapter<MainListRe
         return dataItems.size();
     }
 
+
     public void updateData(ArrayList<DataItem> newdata) {
         dataItems = newdata;
         notifyDataSetChanged();
 
     }
 
-    static class MainListRecyclerViewHolder extends RecyclerView.ViewHolder {
+    class MainListRecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         MainListRecyclerItemBinding mainListRecyclerItemBinding;
 
-        public MainListRecyclerViewHolder(MainListRecyclerItemBinding gainloseRvItemBinding) {
-            super(gainloseRvItemBinding.getRoot());
-            this.mainListRecyclerItemBinding = gainloseRvItemBinding;
+
+        public MainListRecyclerViewHolder(MainListRecyclerItemBinding mainListRecyclerItemBinding)  {
+            super(mainListRecyclerItemBinding.getRoot());
+            this.mainListRecyclerItemBinding = mainListRecyclerItemBinding;
         }
 
         public void bind(DataItem dataItem) {
 
-            loadCoinlogo(dataItem);
+            loadCoinLogo(dataItem);
             loadChart(dataItem);
 
-            mainListRecyclerItemBinding.GLCoinName.setText(dataItem.getName());
-            mainListRecyclerItemBinding.GLcoinSymbol.setText(dataItem.getSymbol());
+            mainListRecyclerItemBinding.coinName.setText(dataItem.getName());
+            mainListRecyclerItemBinding.coinSymbol.setText(dataItem.getSymbol());
+            mainListRecyclerItemBinding.recyclerItemLayout.setOnClickListener(this::onClick);
+
 
 
         }
 
-        private void loadCoinlogo(DataItem dataItem) {
+        private void loadCoinLogo(DataItem dataItem) {
             Glide.with(mainListRecyclerItemBinding.getRoot().getContext())
                     .load("https://s2.coinmarketcap.com/static/img/coins/32x32/" + dataItem.getId() + ".png")
 
@@ -94,5 +112,12 @@ public class MainListRecyclerViewAdapter extends RecyclerView.Adapter<MainListRe
         }
 
 
+        @Override
+        public void onClick(View v) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClickListener(v, getAdapterPosition());
+
+            }
+        }
     }
 }

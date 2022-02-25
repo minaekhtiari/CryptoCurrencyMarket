@@ -40,7 +40,7 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/search_box_bg"
                 android:ems="10"
-                android:hint="search"
+                android:hint="@string/search_box"
                 android:inputType="textPersonName"
                 android:paddingStart="25dp"
                 android:singleLine="true"

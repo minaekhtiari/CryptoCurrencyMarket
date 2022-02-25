@@ -5,4 +5,5 @@
     <string name="market_fragment">Market</string>
     <string name="home_fragment">Home</string>
     <string name="bookMark_fragment">MarkedList</string>
+    <string name="search_box">search</string>
 </resources>

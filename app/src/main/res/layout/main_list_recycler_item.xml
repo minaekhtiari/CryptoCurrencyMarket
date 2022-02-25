@@ -8,7 +8,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/GainLoseRVCon"
+        android:id="@+id/recycler_item_layout"
         android:layout_width="match_parent"
         android:layout_height="70dp">
 
@@ -29,7 +29,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/GLCoinName"
+                    android:id="@+id/coin_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -50,15 +50,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <ImageView
-                    android:id="@+id/UpDownIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:layout_editor_absoluteX="333dp"
-                    tools:layout_editor_absoluteY="49dp" />
+
 
                 <TextView
-                    android:id="@+id/GLcoinSymbol"
+                    android:id="@+id/coin_symbol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -66,7 +61,7 @@
                     android:textColor="#C3595959"
                     android:textSize="13sp"
                     app:layout_constraintStart_toEndOf="@+id/main_list_logo"
-                    app:layout_constraintTop_toBottomOf="@+id/GLCoinName"
+                    app:layout_constraintTop_toBottomOf="@+id/coin_name"
                     tools:text="TextView" />
 
                 <ImageView
@@ -76,7 +71,7 @@
                     android:scaleType="fitXY"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/GLCoinName"
+                    app:layout_constraintStart_toEndOf="@+id/coin_name"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView

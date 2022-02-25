@@ -5,15 +5,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.coinmarket.Adapters.MainListAdapter;
 import com.example.coinmarket.Adapters.MainListRecyclerViewAdapter;
 import com.example.coinmarket.PojoModels.AllMarketModel;
 import com.example.coinmarket.PojoModels.DataItem;
@@ -22,8 +23,6 @@ import com.example.coinmarket.ViewModel.AppViewModel;
 import com.example.coinmarket.databinding.FragmentMainListBinding;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -55,10 +54,9 @@ public class MainListFragment extends Fragment {
         appViewModel = new ViewModelProvider(requireActivity()).get(AppViewModel.class);
 
         setRecyclerView(pos);
+
         return fragmentMainListBinding.getRoot();
     }
-
-
 
 
     public void setRecyclerView(int pos) {
@@ -71,12 +69,11 @@ public class MainListFragment extends Fragment {
                     data = allMarketModel.getRootData().getCryptoCurrencyList();
 
 
-
                     try {
                         ArrayList<DataItem> dataItems = new ArrayList<>();
                         //if page was MainList
                         if (pos == 0) {
-                            for (int i = 0;i < 50;i++){
+                            for (int i = 0; i < 50; i++) {
                                 dataItems.add(data.get(i));
                             }
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -85,6 +82,23 @@ public class MainListFragment extends Fragment {
                             if (fragmentMainListBinding.mainList.getAdapter() == null) {
                                 mainListRecyclerViewAdapter = new MainListRecyclerViewAdapter(dataItems);
                                 fragmentMainListBinding.mainList.setAdapter(mainListRecyclerViewAdapter);
+//                                fragmentMainListBinding.mainList.setAdapter(new MainListRecyclerViewAdapter(
+//                                        dataItems, new MainListRecyclerViewAdapter.OnItemClickListener() {
+//                                    @Override public void onItemClick(DataItem item) {
+//
+//                                        Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_detailFragment);
+//                                        Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_LONG).show();
+//
+//                                    }
+//                                }));
+                                mainListRecyclerViewAdapter.setOnItemClickListener(new MainListRecyclerViewAdapter.onRecyclerViewItemClickListener() {
+                                    @Override
+                                    public void onItemClickListener(View view, int position) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putParcelable("dataItemModel", dataItems.get(position));
+                                        Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_detailFragment, bundle);
+                                    }
+                                });
                             } else {
                                 mainListRecyclerViewAdapter = (MainListRecyclerViewAdapter) fragmentMainListBinding.mainList.getAdapter();
                                 mainListRecyclerViewAdapter.updateData(dataItems);
@@ -95,7 +109,6 @@ public class MainListFragment extends Fragment {
                             fragmentMainListBinding.textView.setVisibility(View.VISIBLE);
 
                         }
-
 
 
                     } catch (Exception e) {
@@ -111,4 +124,5 @@ public class MainListFragment extends Fragment {
         super.onDestroy();
         compositeDisposable.clear();
     }
+
 }

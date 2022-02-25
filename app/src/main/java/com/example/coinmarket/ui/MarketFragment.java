@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -16,35 +15,31 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
-import com.example.coinmarket.Adapters.MainListAdapter;
 import com.example.coinmarket.Adapters.MainListRecyclerViewAdapter;
-import com.example.coinmarket.Adapters.TopRecyclerViewAdapter;
 import com.example.coinmarket.MainActivity;
 import com.example.coinmarket.PojoModels.AllMarketModel;
 import com.example.coinmarket.PojoModels.DataItem;
 import com.example.coinmarket.R;
-import com.example.coinmarket.RoomDataBase.MarketEntity;
 import com.example.coinmarket.ViewModel.AppViewModel;
 import com.example.coinmarket.databinding.FragmentMarketBinding;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import java.nio.file.Watchable;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MarketFragment extends Fragment {
@@ -56,6 +51,7 @@ public class MarketFragment extends Fragment {
     MainListRecyclerViewAdapter mainListRecyclerViewAdapter;
     List<DataItem> data;
     ArrayList<DataItem> searchList;
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -89,12 +85,21 @@ public class MarketFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentMarketBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_market, container, false);
-        // Inflate the layout for this fragment
+
         compositeDisposable = new CompositeDisposable();
         searchList=new ArrayList<>();
         //viewModel
         appViewModel = new ViewModelProvider(requireActivity()).get(AppViewModel.class);
         setRecyclerView();
+        SearchEditText();
+
+
+        return fragmentMarketBinding.getRoot(); //inflater.inflate(R.layout.fragment_market, container, false);
+
+
+    }
+
+    private void SearchEditText() {
         fragmentMarketBinding.searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -108,13 +113,25 @@ public class MarketFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 searchList(s.toString());
+                fragmentMarketBinding.searchEditText.clearFocus();
+                fragmentMarketBinding.frameLayoutMarket.isFocused();
             }
         });
 
-        return fragmentMarketBinding.getRoot(); //inflater.inflate(R.layout.fragment_market, container, false);
-
-
+        fragmentMarketBinding.searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (actionId == KeyEvent.KEYCODE_ENTER)) {
+                    // hide virtual keyboard
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(fragmentMarketBinding.searchEditText.getWindowToken(), 0);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -143,10 +160,36 @@ public class MarketFragment extends Fragment {
                             }
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                             fragmentMarketBinding.marketRecyclerView.setLayoutManager(linearLayoutManager);
-
+                            Bundle bundle=new Bundle();
                             if (fragmentMarketBinding.marketRecyclerView.getAdapter() == null) {
                                 mainListRecyclerViewAdapter = new MainListRecyclerViewAdapter(dataItems);
                                 fragmentMarketBinding.marketRecyclerView.setAdapter(mainListRecyclerViewAdapter);
+//                                fragmentMarketBinding.marketRecyclerView.setAdapter(new MainListRecyclerViewAdapter(
+//                                        dataItems, new MainListRecyclerViewAdapter.OnItemClickListener() {
+//                                    @Override public void onItemClick(DataItem item) {
+//                                        mainListRecyclerViewAdapter.getItemPosition();
+//                                        Bundle bundle=new Bundle();
+//                                        bundle.putParcelable("dataItemModel",);
+//
+//                                        Navigation.findNavController(getView())
+//                                                .navigate(R.id.action_marketFragment_to_detailFragment);
+//
+//                                    }
+//                                }));
+
+
+                                mainListRecyclerViewAdapter.setOnItemClickListener
+                                        (new MainListRecyclerViewAdapter.onRecyclerViewItemClickListener() {
+                                    @Override
+                                    public void onItemClickListener(View view, int position) {
+
+                                        bundle.putParcelable("dataItemModel",dataItems.get(position));
+                                        Navigation.findNavController(getView())
+                                                .navigate(R.id.action_marketFragment_to_detailFragment,bundle);
+
+                                  Log.e    ( "bundle" ,dataItems.get(position).getName());
+                                    }
+                                });
                             } else {
                                 mainListRecyclerViewAdapter = (MainListRecyclerViewAdapter)
                                         fragmentMarketBinding.marketRecyclerView.getAdapter();
